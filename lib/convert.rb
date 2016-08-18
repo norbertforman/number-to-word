@@ -6,6 +6,10 @@ class Convert
   end
 
   def to_word(number)
-    @number_words_hash[number] if @number_words_hash.has_key?(number)
+    if @number_words_hash.has_key?(number)
+      @number_words_hash[number]
+    else
+      raise MissingNumberError
+    end
   end
 end
