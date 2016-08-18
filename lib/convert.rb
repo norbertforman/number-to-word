@@ -6,8 +6,15 @@ class Convert
   end
 
   def to_word(number)
+    raise MissingNumberError if number < 0 || number > 9999999
     value = ''
-    value = build(value, number / 1000, 'thousand')
+    value = build(value, number / 1000000, 'million')
+    value = build(value, (number / 100000) % 10, 'hundred')
+    thousand = (number / 1000) % 100
+    value = value + ' and' if value.length > 0 && thousand != 0
+    value = build(value, thousand, 'thousand')
+    value = value + ' thousand' if value.length > 0 &&
+      !value.include?('thousand') && value.include?('hundred')
     value = build(value, (number % 1000) / 100, 'hundred')
     tens = number % 100
     value = value + ' and' if value.length > 0 && tens != 0
