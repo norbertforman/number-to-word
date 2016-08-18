@@ -9,7 +9,9 @@ class Convert
     value = ''
     value = build(value, number / 1000, 'thousand')
     value = build(value, (number % 1000) / 100, 'hundred')
-    value = build(value, (number % 100), '')
+    tens = number % 100
+    value = value + ' and' if value.length > 0 && tens != 0
+    value = build(value, tens, '')
     value.strip
   end
 
@@ -25,7 +27,7 @@ class Convert
     tens = ((number % 100) / 10) * 10
     ones = number % 10
     if @number_words_hash.has_key?(tens) && @number_words_hash.has_key?(ones)
-      return "#{@number_words_hash[tens]} #{@number_words_hash[ones]}"
+      return "#{@number_words_hash[tens]}-#{@number_words_hash[ones]}"
     else
       raise MissingNumberError
     end
